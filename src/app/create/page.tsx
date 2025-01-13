@@ -42,22 +42,33 @@ export default function CreateProposal() {
   const companyForm = useForm<CompanyFormValues>({
     resolver: zodResolver(companyFormSchema),
     defaultValues: {
-      companyName: proposalData.companyName || "",
-      companyAddress: proposalData.companyAddress || "",
-      companyEmail: proposalData.companyEmail || "",
-      companyPhone: proposalData.companyPhone || "",
+      companyName: proposalData.companyName || "companyName",
+      companyAddress:
+        proposalData.companyAddress ||
+        "companyNamecompanyNamecompanyNamecompanyNamecompanyName",
+      companyEmail:
+        proposalData.companyEmail || "companyName@companyName.companyName",
+      companyPhone: proposalData.companyPhone || "123435345345345",
       businessRegNo: proposalData.businessRegNo || "",
     },
+    mode: "onTouched",
+    reValidateMode: "onChange",
   });
 
   const clientForm = useForm<ClientFormValues>({
     resolver: zodResolver(clientFormSchema),
     defaultValues: {
-      clientName: proposalData.clientName || "",
-      clientCompany: proposalData.clientCompany || "",
-      clientAddress: proposalData.clientAddress || "",
-      projectName: proposalData.projectName || "",
+      clientName: proposalData.clientName || "companyName",
+      clientCompany: proposalData.clientCompany || "companyName",
+      clientAddress:
+        proposalData.clientAddress ||
+        "companyNamecompanyNamecompanyNamecompanyNamecompanyNamecompanyName",
+      projectName:
+        proposalData.projectName ||
+        "companyNamecompanyNamecompanyNamecompanyNamecompanyName",
     },
+    mode: "onChange",
+    reValidateMode: "onChange",
   });
 
   const projectComponentsForm = useForm<ProjectComponentFormValues>({
@@ -65,6 +76,8 @@ export default function CreateProposal() {
     defaultValues: {
       components: proposalData.components || [],
     },
+    mode: "onChange",
+    reValidateMode: "onChange",
   });
 
   const handleNext = async () => {
@@ -86,7 +99,16 @@ export default function CreateProposal() {
         }
         break;
       case 2:
+        const components = projectComponentsForm.getValues().components;
+        if (!components?.length) {
+          projectComponentsForm.setError("components", {
+            type: "manual",
+            message: "Please add at least one project component",
+          });
+          return;
+        }
         isValid = await projectComponentsForm.trigger();
+        console.log("Clicked on Done: ", isValid);
         if (isValid) {
           updateProjectComponents(projectComponentsForm.getValues().components);
           // Handle form completion
@@ -339,80 +361,121 @@ export default function CreateProposal() {
                           </FormItem>
                         )}
                       />
-                      <div className="flex items-center space-x-4">
-                        <FormField
-                          control={projectComponentsForm.control}
-                          name={`components.${index}.isFixedPrice`}
-                          render={({ field }) => (
-                            <FormItem className="flex items-center space-x-2">
-                              <FormControl>
-                                <Switch
-                                  checked={field.value}
-                                  onCheckedChange={(checked) => {
-                                    field.onChange(checked);
-                                    updateSubtotal(index);
-                                  }}
-                                />
-                              </FormControl>
-                              <FormLabel>Fixed Price</FormLabel>
-                            </FormItem>
-                          )}
-                        />
-                      </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <FormField
-                          control={projectComponentsForm.control}
-                          name={`components.${index}.rate`}
-                          render={({ field }) => (
-                            <FormItem>
-                              <FormLabel>
-                                {projectComponentsForm.watch(
-                                  `components.${index}.isFixedPrice`
-                                )
-                                  ? "Fixed Price"
-                                  : "Hourly Rate"}
-                              </FormLabel>
-                              <FormControl>
-                                <Input
-                                  type="number"
-                                  {...field}
-                                  onChange={(e) => {
-                                    field.onChange(parseFloat(e.target.value));
-                                    updateSubtotal(index);
-                                  }}
-                                />
-                              </FormControl>
-                              <FormMessage />
-                            </FormItem>
-                          )}
-                        />
-                        {!projectComponentsForm.watch(
-                          `components.${index}.isFixedPrice`
-                        ) && (
+
+                      <div className="space-y-4">
+                        <div className="bg-muted p-4 rounded-lg">
                           <FormField
                             control={projectComponentsForm.control}
-                            name={`components.${index}.hours`}
+                            name={`components.${index}.isFixedPrice`}
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Hours</FormLabel>
+                                <div className="space-y-2">
+                                  <FormLabel>Pricing Type</FormLabel>
+                                  <div className="flex flex-col space-y-2">
+                                    <div className="flex items-center space-x-2">
+                                      <span className="text-xs">
+                                        Hourly Rate
+                                      </span>
+                                      <Switch
+                                        checked={field.value}
+                                        onCheckedChange={(checked) => {
+                                          field.onChange(checked);
+                                          // Reset values when switching
+                                          if (checked) {
+                                            projectComponentsForm.setValue(
+                                              `components.${index}.hours`,
+                                              undefined
+                                            );
+                                          }
+                                          updateSubtotal(index);
+                                        }}
+                                      />
+                                      <span className="text-xs">
+                                        Fixed Price
+                                      </span>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground">
+                                      {field.value
+                                        ? "Set a single fixed price for the entire service"
+                                        : "Calculate total based on hourly rate × number of hours"}
+                                    </p>
+                                  </div>
+                                </div>
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4">
+                          <FormField
+                            control={projectComponentsForm.control}
+                            name={`components.${index}.rate`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>
+                                  {projectComponentsForm.watch(
+                                    `components.${index}.isFixedPrice`
+                                  )
+                                    ? "Fixed Price"
+                                    : "Hourly Rate"}
+                                </FormLabel>
                                 <FormControl>
-                                  <Input
-                                    type="number"
-                                    {...field}
-                                    onChange={(e) => {
-                                      field.onChange(
-                                        parseFloat(e.target.value)
-                                      );
-                                      updateSubtotal(index);
-                                    }}
-                                  />
+                                  <div className="relative">
+                                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                                      $
+                                    </span>
+                                    <Input
+                                      type="number"
+                                      {...field}
+                                      className="pl-7"
+                                      placeholder="0.00"
+                                      value={field.value || ""} // This removes the default 0
+                                      onChange={(e) => {
+                                        const value = e.target.value
+                                          ? parseFloat(e.target.value)
+                                          : undefined;
+                                        field.onChange(value);
+                                        updateSubtotal(index);
+                                      }}
+                                    />
+                                  </div>
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
                             )}
                           />
-                        )}
+                          {!projectComponentsForm.watch(
+                            `components.${index}.isFixedPrice`
+                          ) && (
+                            <FormField
+                              control={projectComponentsForm.control}
+                              name={`components.${index}.hours`}
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Hours</FormLabel>
+                                  <FormControl>
+                                    <Input
+                                      type="number"
+                                      {...field}
+                                      placeholder="0"
+                                      value={field.value || ""} // This removes the default 0
+                                      onChange={(e) => {
+                                        const value = e.target.value
+                                          ? parseFloat(e.target.value)
+                                          : undefined;
+                                        field.onChange(value);
+                                        updateSubtotal(index);
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          )}
+                        </div>
                       </div>
+
                       <div className="text-right">
                         <p className="text-sm font-medium">
                           Subtotal: $
@@ -433,6 +496,12 @@ export default function CreateProposal() {
               >
                 Add Component
               </Button>
+
+              {projectComponentsForm.formState.errors.components && (
+                <p className="text-destructive text-sm mt-2">
+                  {projectComponentsForm.formState.errors.components.message}
+                </p>
+              )}
 
               <div className="text-right">
                 <p className="text-lg font-bold">
