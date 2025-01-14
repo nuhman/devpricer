@@ -28,7 +28,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-//import { ProjectComponent } from "@/types/Project";
+import AlertDialog from "../ui/shared/alertdialog";
+
 import { v4 as uuidv4 } from "uuid";
 
 const steps = [
@@ -36,7 +37,7 @@ const steps = [
   "Client Information",
   "Project Billing Components",
 ];
-const IS_FORM_TEST = true;
+const IS_FORM_TEST = false;
 
 export default function CreateProposal() {
   const [currentStep, setCurrentStep] = useState(0);
@@ -45,6 +46,7 @@ export default function CreateProposal() {
     updateCompanyDetails,
     updateClientDetails,
     updateProjectComponents,
+    clearProposal,
   } = useProposal();
 
   const companyForm = useForm<CompanyFormValues>({
@@ -198,6 +200,72 @@ export default function CreateProposal() {
     }
 
     projectComponentsForm.setValue(`components.${index}.subtotal`, newSubtotal);
+  };
+
+  const ResetButton = () => {
+    const [showDialog, setShowDialog] = useState(false);
+
+    const handleReset = () => {
+      // First clear the localStorage and context
+      clearProposal();
+
+      // Reset all form states with their initial values
+      companyForm.reset({
+        companyName: "",
+        companyAddress: "",
+        companyEmail: "",
+        companyPhone: "",
+        businessRegNo: "",
+      });
+
+      clientForm.reset({
+        clientName: "",
+        clientCompany: "",
+        clientAddress: "",
+        projectName: "",
+      });
+
+      projectComponentsForm.reset({
+        components: [],
+        currency: "USD",
+      });
+
+      // Reset to first step
+      setCurrentStep(0);
+
+      // Close the dialog
+      setShowDialog(false);
+
+      // Force a hard reset of all form states
+      setTimeout(() => {
+        companyForm.clearErrors();
+        clientForm.clearErrors();
+        projectComponentsForm.clearErrors();
+      }, 0);
+    };
+
+    return (
+      <>
+        <Button
+          variant="outline"
+          className="text-red-500 border-red-200 hover:bg-red-50"
+          onClick={() => setShowDialog(true)}
+        >
+          Reset Form
+        </Button>
+
+        <AlertDialog
+          isOpen={showDialog}
+          onClose={() => setShowDialog(false)}
+          onConfirm={handleReset}
+          title="Are you sure?"
+          description="This will clear all form data and cannot be undone."
+          confirmText="Reset All Data"
+          cancelText="Cancel"
+          variant="destructive"
+        />
+      </>
+    );
   };
 
   return (
@@ -616,14 +684,17 @@ export default function CreateProposal() {
 
         {/* Navigation Buttons */}
         <div className="mt-8 flex justify-between">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setCurrentStep((prev) => Math.max(0, prev - 1))}
-            disabled={currentStep === 0}
-          >
-            Previous
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setCurrentStep((prev) => Math.max(0, prev - 1))}
+              disabled={currentStep === 0}
+            >
+              Previous
+            </Button>
+            <ResetButton />
+          </div>
           <Button type="button" onClick={handleNext}>
             {currentStep === steps.length - 1 ? "Generate PDF" : "Next"}
           </Button>
