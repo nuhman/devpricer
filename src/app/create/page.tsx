@@ -1,9 +1,12 @@
 "use client";
 
+//app/create/page.tsx
+
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useProposal } from "@/context/ProposalContext";
+import { useRouter } from "next/navigation";
 import {
   companyFormSchema,
   clientFormSchema,
@@ -28,7 +31,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import AlertDialog from "../ui/shared/alertdialog";
+import AlertDialog from "@/app/ui/shared/alertdialog";
 
 import { v4 as uuidv4 } from "uuid";
 
@@ -40,6 +43,7 @@ const steps = [
 const IS_FORM_TEST = false;
 
 export default function CreateProposal() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
   const {
     proposalData,
@@ -123,7 +127,9 @@ export default function CreateProposal() {
         console.log("Clicked on Done: ", isValid);
         if (isValid) {
           updateProjectComponents(projectComponentsForm.getValues().components);
-          // Handle form completion
+          setTimeout(() => {
+            router.push("/preview");
+          }, 0);
         }
         break;
     }
@@ -713,7 +719,14 @@ export default function CreateProposal() {
             </Button>
             <ResetButton />
           </div>
-          <Button type="button" onClick={handleNext}>
+          <Button
+            type="button"
+            onClick={handleNext}
+            disabled={
+              currentStep === 2 &&
+              projectComponentsForm.getValues().components.length === 0
+            }
+          >
             {currentStep === steps.length - 1 ? "Generate PDF" : "Next"}
           </Button>
         </div>
