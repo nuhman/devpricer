@@ -129,23 +129,39 @@ export default function CreateProposal() {
     }
   };
 
-  const addComponent = () => {
+  const addComponent = async () => {
     const currentComponents =
       projectComponentsForm.getValues().components || [];
-    const newIndex = currentComponents.length;
 
+    if (currentComponents.length > 0) {
+      const lastComponentIndex = currentComponents.length - 1;
+      const isValid = await projectComponentsForm.trigger(
+        `components.${lastComponentIndex}`
+      );
+
+      if (!isValid) {
+        // If the last component isn't valid, don't add a new one
+        return;
+      }
+    }
+
+    const newIndex = currentComponents.length;
+    const newComponent = {
+      id: uuidv4(),
+      serviceName: "",
+      description: "",
+      rate: undefined,
+      hours: undefined,
+      isFixedPrice: false,
+      subtotal: 0,
+    };
+    // Update form with new component
     projectComponentsForm.setValue("components", [
       ...currentComponents,
-      {
-        id: uuidv4(),
-        serviceName: "",
-        description: "",
-        rate: undefined,
-        isFixedPrice: false,
-        subtotal: 0,
-      },
+      newComponent,
     ]);
 
+    // Clear any existing errors for the new component
     const errorPaths = [
       `components.${newIndex}`,
       `components.${newIndex}.serviceName`,
@@ -156,10 +172,12 @@ export default function CreateProposal() {
       `components.${newIndex}.subtotal`,
     ] as const;
 
-    // Clear errors for the new component
     errorPaths.forEach((path) => {
       projectComponentsForm.clearErrors(path);
     });
+
+    // Save to context & localstorage
+    updateProjectComponents([...currentComponents, newComponent]);
   };
 
   const removeComponent = (index: number) => {
