@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ProposalProvider } from "@/context/ProposalContext";
+import Navigation from "@/app/ui/shared/header";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -28,7 +29,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ProposalProvider>{children}</ProposalProvider>
+        <ProposalProvider>
+          <Navigation />
+          <main>{children}</main>
+        </ProposalProvider>
       </body>
     </html>
   );

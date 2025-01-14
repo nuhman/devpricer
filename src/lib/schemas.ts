@@ -6,7 +6,10 @@ export const companyFormSchema = z.object({
   companyEmail: z.string().email("Please provide a valid email address"),
   companyPhone: z
     .string()
-    .regex(/^\+?[\d\s-]{10,}$/, "Please provide a valid phone number"),
+    .regex(
+      /^\+?(\d{1,3})?[-.\s]?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/,
+      "Please provide a valid phone number"
+    ),
   businessRegNo: z.string().optional(),
 });
 
@@ -25,7 +28,7 @@ export const projectComponentSchema = z.object({
   description: z
     .string()
     .min(10, "Please provide a detailed description (min 10 chars)"),
-  rate: z.number().min(1, "Rate must be greater than 0"),
+  rate: z.number().min(1, "Rate must be greater than 0").optional(),
   hours: z.number().optional(),
   isFixedPrice: z.boolean(),
   subtotal: z.number().min(0),
@@ -35,6 +38,7 @@ export const projectComponentsFormSchema = z.object({
   components: z
     .array(projectComponentSchema)
     .min(1, "Add at least one component"),
+  currency: z.string(),
 });
 
 export type CompanyFormValues = z.infer<typeof companyFormSchema>;

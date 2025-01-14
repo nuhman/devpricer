@@ -2,7 +2,7 @@ export interface ProjectComponent {
   id: string;
   serviceName: string;
   description: string;
-  rate: number;
+  rate?: number;
   hours?: number;
   isFixedPrice: boolean;
   subtotal: number;
@@ -18,5 +18,13 @@ export interface ProposalData {
   clientCompany: string;
   clientAddress: string;
   projectName: string;
+  currency: string;
   components: ProjectComponent[];
+}
+
+export interface Currency {
+  code: string;
+  name: string;
+  symbol?: string;
+  country: string;
 }
