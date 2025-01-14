@@ -115,7 +115,7 @@ export default function CreateProposal() {
         }
         break;
       case 2:
-        const components = projectComponentsForm.getValues().components;
+        const { components, currency } = projectComponentsForm.getValues();
         if (!components?.length) {
           projectComponentsForm.setError("components", {
             type: "manual",
@@ -126,7 +126,10 @@ export default function CreateProposal() {
         isValid = await projectComponentsForm.trigger();
         console.log("Clicked on Done: ", isValid);
         if (isValid) {
-          updateProjectComponents(projectComponentsForm.getValues().components);
+          updateProjectComponents({
+            components: components,
+            currency: currency,
+          });
           setTimeout(() => {
             router.push("/preview");
           }, 0);

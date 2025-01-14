@@ -1,89 +1,155 @@
-// app/ui/proposaltemplate.tsx
 import React from "react";
-import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  StyleSheet,
+  Font,
+} from "@react-pdf/renderer";
 import { ProposalData } from "@/types/Project";
 
-// Create styles
+// Register custom fonts - using Roboto as an example
+Font.register({
+  family: "Roboto",
+  fonts: [
+    {
+      src: "https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-light-webfont.ttf",
+      fontWeight: 300,
+    },
+    {
+      src: "https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-regular-webfont.ttf",
+      fontWeight: 400,
+    },
+    {
+      src: "https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-medium-webfont.ttf",
+      fontWeight: 500,
+    },
+    {
+      src: "https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-bold-webfont.ttf",
+      fontWeight: 700,
+    },
+  ],
+});
+
 const styles = StyleSheet.create({
   page: {
-    padding: 50,
-    fontFamily: "Helvetica",
-  },
-  header: {
-    marginBottom: 30,
-  },
-  proposerInfo: {
-    marginBottom: 20,
-  },
-  clientInfo: {
-    marginBottom: 30,
-  },
-  section: {
-    margin: 10,
-    padding: 10,
-  },
-  heading: {
-    fontSize: 20,
-    marginBottom: 10,
-    fontFamily: "Helvetica-Bold",
-  },
-  subheading: {
-    fontSize: 16,
-    marginBottom: 5,
-    fontFamily: "Helvetica-Bold",
-  },
-  text: {
+    padding: 30,
+    fontFamily: "Roboto",
     fontSize: 12,
-    marginBottom: 5,
-    fontFamily: "Helvetica",
+    color: "#333333",
+  },
+  headerContainer: {
+    marginBottom: 20,
+    borderBottom: "2px solid #2563eb",
+    paddingBottom: 10,
+  },
+  proposalTitle: {
+    fontSize: 20,
+    fontWeight: 700,
+    color: "#2563eb",
+    marginBottom: 10,
+  },
+  proposalDate: {
+    fontSize: 14,
+    color: "#64748b",
+  },
+  infoSection: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 10,
+  },
+  infoBlock: {
+    width: "45%",
+  },
+  infoLabel: {
+    fontSize: 14,
+    fontWeight: 500,
+    color: "#2563eb",
+    marginBottom: 8,
+    textTransform: "uppercase",
+  },
+  infoText: {
+    fontSize: 12,
+    marginBottom: 4,
+    lineHeight: 1.4,
+  },
+  projectSection: {
+    marginBottom: 30,
+    backgroundColor: "#f8fafc",
+    padding: 15,
+    borderRadius: 4,
+  },
+  projectTitle: {
+    fontSize: 18,
+    fontWeight: 500,
+    color: "#1e293b",
+    marginBottom: 10,
+    textAlign: "center",
+    textTransform: "capitalize",
   },
   tableContainer: {
-    width: "100%",
-    marginBottom: 20,
+    marginTop: 20,
+  },
+  tableHeader: {
+    flexDirection: "row",
+    backgroundColor: "#2563eb",
+    color: "#ffffff",
+    padding: 10,
+    fontSize: 12,
+    fontWeight: 500,
   },
   tableRow: {
     flexDirection: "row",
+    borderBottomColor: "#e2e8f0",
     borderBottomWidth: 1,
-    borderBottomColor: "#EEEEEE",
-    minHeight: 30,
+    padding: 10,
+    minHeight: 40,
     alignItems: "center",
   },
-  tableHeader: {
-    backgroundColor: "#F9FAFB",
-    fontFamily: "Helvetica-Bold",
+  tableRowEven: {
+    backgroundColor: "#f8fafc",
   },
-  tableCell: {
-    flex: 1,
-    padding: 5,
-  },
-  serviceName: {
-    width: "20%",
-    padding: 5,
-  },
-  description: {
-    width: "35%",
-    padding: 5,
-  },
-  rate: {
-    width: "15%",
-    padding: 5,
-    textAlign: "right",
-  },
-  hours: {
-    width: "15%",
-    padding: 5,
-    textAlign: "right",
-  },
-  subtotal: {
-    width: "15%",
-    padding: 5,
-    textAlign: "right",
-  },
-  total: {
+  col1: { width: "25%", textAlign: "left" },
+  col2: { width: "35%", textAlign: "left" },
+  col3: { width: "15%", textAlign: "right" },
+  col4: { width: "10%", textAlign: "right", paddingRight: "2px" },
+  col5: { width: "15%", textAlign: "right" },
+  totalSection: {
     marginTop: 20,
+    paddingTop: 20,
     borderTopWidth: 2,
-    borderTopColor: "#000",
-    paddingTop: 10,
+    borderTopColor: "#2563eb",
+  },
+  totalRow: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginTop: 10,
+  },
+  totalLabel: {
+    fontSize: 16,
+    fontWeight: 700,
+    color: "#1e293b",
+    marginRight: 20,
+  },
+  totalAmount: {
+    fontSize: 20,
+    fontWeight: 700,
+    color: "#2563eb",
+    marginLeft: "4px",
+  },
+  footer: {
+    position: "absolute",
+    bottom: 30,
+    left: 50,
+    right: 50,
+    textAlign: "center",
+    color: "#64748b",
+    fontSize: 10,
+    borderTopWidth: 1,
+    borderTopColor: "#e2e8f0",
+    paddingTop: 20,
   },
 });
 
@@ -91,119 +157,109 @@ interface ProposalTemplateProps {
   data: ProposalData;
 }
 
-const ProposalTemplate: React.FC<ProposalTemplateProps> = ({ data }) => (
-  <Document>
-    <Page size="A4" style={styles.page}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.heading}>Project Proposal</Text>
-        <Text style={styles.text}>{new Date().toLocaleDateString()}</Text>
-      </View>
+const ProposalTemplate: React.FC<ProposalTemplateProps> = ({ data }) => {
+  const totalAmount = data.components.reduce(
+    (sum, component) => sum + component.subtotal,
+    0
+  );
 
-      {/* Proposer Information */}
-      <View style={styles.proposerInfo}>
-        <Text style={styles.subheading}>From:</Text>
-        <Text style={styles.text}>{data.companyName}</Text>
-        <Text style={styles.text}>{data.companyAddress}</Text>
-        <Text style={styles.text}>{data.companyEmail}</Text>
-        <Text style={styles.text}>{data.companyPhone}</Text>
-        {data.businessRegNo && (
-          <Text style={styles.text}>Reg No: {data.businessRegNo}</Text>
-        )}
-      </View>
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        {/* Header Section */}
+        <View style={styles.headerContainer}>
+          <Text style={styles.proposalTitle}>
+            Proposal - {data.projectName}
+          </Text>
+          <Text style={styles.proposalDate}>
+            {new Date().toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+            })}
+          </Text>
+        </View>
 
-      {/* Client Information */}
-      <View style={styles.clientInfo}>
-        <Text style={styles.subheading}>To:</Text>
-        <Text style={styles.text}>{data.clientName}</Text>
-        <Text style={styles.text}>{data.clientCompany}</Text>
-        <Text style={styles.text}>{data.clientAddress}</Text>
-      </View>
-
-      {/* Project Details */}
-      <View style={styles.section}>
-        <Text style={styles.subheading}>Project: {data.projectName}</Text>
-      </View>
-
-      {/* Components Table */}
-      <View style={styles.section}>
-        <Text style={styles.subheading}>Project Components</Text>
-        <View style={styles.tableContainer}>
-          {/* Table Header */}
-          <View style={[styles.tableRow, styles.tableHeader]}>
-            <View style={styles.serviceName}>
-              <Text>Service</Text>
-            </View>
-            <View style={styles.description}>
-              <Text>Description</Text>
-            </View>
-            <View style={styles.rate}>
-              <Text>Rate</Text>
-            </View>
-            <View style={styles.hours}>
-              <Text>Hours</Text>
-            </View>
-            <View style={styles.subtotal}>
-              <Text>Subtotal</Text>
-            </View>
+        {/* Company and Client Info Section */}
+        <View style={styles.infoSection}>
+          <View style={styles.infoBlock}>
+            <Text style={styles.infoLabel}>From</Text>
+            <Text style={[styles.infoText, { fontWeight: 500 }]}>
+              {data.companyName}
+            </Text>
+            <Text style={styles.infoText}>{data.companyAddress}</Text>
+            <Text style={styles.infoText}>{data.companyEmail}</Text>
+            <Text style={styles.infoText}>{data.companyPhone}</Text>
+            {data.businessRegNo && (
+              <Text style={styles.infoText}>Reg No: {data.businessRegNo}</Text>
+            )}
           </View>
 
-          {/* Table Rows */}
-          {data.components.map((component) => (
-            <View key={component.id} style={styles.tableRow}>
-              <View style={styles.serviceName}>
-                <Text style={styles.text}>{component.serviceName}</Text>
-              </View>
-              <View style={styles.description}>
-                <Text style={styles.text}>{component.description}</Text>
-              </View>
-              <View style={styles.rate}>
-                <Text style={styles.text}>
-                  {component.isFixedPrice
-                    ? "Fixed"
-                    : `${data.currency} ${component.rate}`}
-                </Text>
-              </View>
-              <View style={styles.hours}>
-                <Text style={styles.text}>
-                  {component.isFixedPrice ? "-" : component.hours}
-                </Text>
-              </View>
-              <View style={styles.subtotal}>
-                <Text style={styles.text}>
-                  {data.currency} {component.subtotal.toFixed(2)}
-                </Text>
-              </View>
-            </View>
-          ))}
-
-          {/* Total */}
-          <View style={[styles.tableRow, styles.total]}>
-            <View style={styles.serviceName}>
-              <Text style={styles.subheading}>Total</Text>
-            </View>
-            <View style={styles.description}>
-              <Text></Text>
-            </View>
-            <View style={styles.rate}>
-              <Text></Text>
-            </View>
-            <View style={styles.hours}>
-              <Text></Text>
-            </View>
-            <View style={styles.subtotal}>
-              <Text style={styles.subheading}>
-                {data.currency}{" "}
-                {data.components
-                  .reduce((sum, component) => sum + component.subtotal, 0)
-                  .toFixed(2)}
-              </Text>
-            </View>
+          <View style={styles.infoBlock}>
+            <Text style={styles.infoLabel}>To</Text>
+            <Text style={[styles.infoText, { fontWeight: 500 }]}>
+              {data.clientName}
+            </Text>
+            <Text style={styles.infoText}>{data.clientCompany}</Text>
+            <Text style={styles.infoText}>{data.clientAddress}</Text>
           </View>
         </View>
-      </View>
-    </Page>
-  </Document>
-);
+
+        {/* Components Table */}
+        <View style={styles.tableContainer}>
+          <View style={styles.tableHeader}>
+            <Text style={styles.col1}>Service</Text>
+            <Text style={styles.col2}>Description</Text>
+            <Text style={styles.col3}>Rate ({data.currency})</Text>
+            <Text style={styles.col4}>Hours</Text>
+            <Text style={styles.col5}>Amount ({data.currency})</Text>
+          </View>
+
+          {data.components.map((component, index) => (
+            <View
+              key={component.id}
+              style={[
+                styles.tableRow,
+                index % 2 === 1
+                  ? styles.tableRowEven
+                  : {
+                      backgroundColor: "#fff",
+                    },
+              ]}
+            >
+              <Text style={styles.col1}>{component.serviceName}</Text>
+              <Text style={styles.col2}>{component.description}</Text>
+              <Text style={styles.col3}>
+                {component.isFixedPrice ? (
+                  "Fixed"
+                ) : (
+                  <Text> {component.rate?.toFixed(2)}</Text>
+                )}
+              </Text>
+              <Text style={styles.col4}>
+                {component.isFixedPrice ? "-" : component.hours}
+              </Text>
+              <Text style={styles.col5}>{component.subtotal.toFixed(2)}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Total Section */}
+        <View style={styles.totalSection}>
+          <View style={styles.totalRow}>
+            <Text style={styles.totalLabel}>Total Amount:</Text>
+            <Text style={{ fontSize: 14 }}>{data.currency}</Text>
+            <Text style={styles.totalAmount}>{totalAmount.toFixed(2)}</Text>
+          </View>
+        </View>
+
+        {/* Footer */}
+        <Text style={styles.footer}>
+          This proposal is valid for 30 days from the date of issue.
+        </Text>
+      </Page>
+    </Document>
+  );
+};
 
 export default ProposalTemplate;

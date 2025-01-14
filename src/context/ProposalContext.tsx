@@ -11,11 +11,19 @@ import { ProposalData, ProjectComponent } from "@/types/Project";
 
 const STORAGE_KEY = "proposal_data";
 
+interface UpdateProjectData {
+  components: ProjectComponent[];
+  currency: string;
+}
+
 interface ProposalContextType {
   proposalData: Partial<ProposalData>;
   updateCompanyDetails: (data: Partial<ProposalData>) => void;
   updateClientDetails: (data: Partial<ProposalData>) => void;
-  updateProjectComponents: (components: ProjectComponent[]) => void;
+  updateProjectComponents: ({
+    components,
+    currency,
+  }: UpdateProjectData) => void;
   clearProposal: () => void;
 }
 
@@ -68,11 +76,15 @@ export function ProposalProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const updateProjectComponents = (components: ProjectComponent[]) => {
+  const updateProjectComponents = ({
+    components,
+    currency,
+  }: UpdateProjectData) => {
     setProposalData((prev) => {
       const updated = {
         ...prev,
         components,
+        currency,
       };
       return updated;
     });

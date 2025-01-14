@@ -38,7 +38,7 @@ export default function PreviewPage() {
       data.clientCompany &&
       data.clientAddress &&
       data.projectName &&
-      //data.currency &&
+      data.currency &&
       data.components
     );
   };
@@ -74,7 +74,6 @@ export default function PreviewPage() {
     );
   }
 
-  // Remove the redirect here since it's now in useEffect
   if (!isCompleteProposal(proposalData)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
