@@ -141,6 +141,7 @@ export default function CreateProposal() {
   const addComponent = async () => {
     const currentComponents =
       projectComponentsForm.getValues().components || [];
+    const currentCurrency = projectComponentsForm.getValues().currency;
 
     if (currentComponents.length > 0) {
       const lastComponentIndex = currentComponents.length - 1;
@@ -164,6 +165,7 @@ export default function CreateProposal() {
       isFixedPrice: false,
       subtotal: 0,
     };
+
     // Update form with new component
     projectComponentsForm.setValue("components", [
       ...currentComponents,
@@ -185,12 +187,17 @@ export default function CreateProposal() {
       projectComponentsForm.clearErrors(path);
     });
 
-    // Save to context & localstorage
-    updateProjectComponents([...currentComponents, newComponent]);
+    // Save to context & localstorage with both components and currency
+    updateProjectComponents({
+      components: [...currentComponents, newComponent],
+      currency: currentCurrency,
+    });
   };
 
   const removeComponent = (index: number) => {
     const currentComponents = projectComponentsForm.getValues().components;
+    const currentCurrency = projectComponentsForm.getValues().currency;
+
     projectComponentsForm.setValue(
       "components",
       currentComponents.filter((_, idx) => idx !== index)
@@ -208,6 +215,12 @@ export default function CreateProposal() {
 
     errorPaths.forEach((path) => {
       projectComponentsForm.clearErrors(path);
+    });
+
+    // Update context with both components and currency
+    updateProjectComponents({
+      components: currentComponents.filter((_, idx) => idx !== index),
+      currency: currentCurrency,
     });
   };
 
