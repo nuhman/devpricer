@@ -315,25 +315,28 @@ export default function CreateProposal() {
       </CardHeader>
       <CardContent>
         {/* Progress Steps */}
-        <div className="mb-8">
+        <div className="mb-8 space-y-2">
           <div className="flex items-center justify-between">
             {steps.map((step, index) => (
               <div key={step} className="flex items-center">
                 <div
                   className={`
-                  w-8 h-8 rounded-full flex items-center justify-center
-                  ${
-                    index <= currentStep
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground"
-                  }
-                `}
+            w-8 h-8 rounded-full flex items-center justify-center
+            ${
+              index <= currentStep
+                ? "bg-primary text-primary-foreground"
+                : "bg-muted text-muted-foreground"
+            }
+          `}
                 >
                   {index + 1}
                 </div>
-                <span className="ml-2 text-sm font-medium">{step}</span>
+                <span className="ml-2 text-sm font-medium hidden sm:inline">
+                  {step}
+                </span>
+
                 {index < steps.length - 1 && (
-                  <div className="w-24 h-1 mx-4 bg-muted">
+                  <div className="w-20 sm:w-24 h-1 mx-2 sm:mx-4 bg-muted">
                     <div
                       className="h-full bg-primary transition-all"
                       style={{ width: index < currentStep ? "100%" : "0%" }}
@@ -342,6 +345,11 @@ export default function CreateProposal() {
                 )}
               </div>
             ))}
+          </div>
+
+          {/* Current step text for mobile only */}
+          <div className="text-center sm:hidden">
+            <span className="text-sm font-medium">{steps[currentStep]}</span>
           </div>
         </div>
 
@@ -743,7 +751,7 @@ export default function CreateProposal() {
               projectComponentsForm.getValues().components.length === 0
             }
           >
-            {currentStep === steps.length - 1 ? "Generate PDF" : "Next"}
+            {currentStep === steps.length - 1 ? "Preview" : "Next"}
           </Button>
         </div>
       </CardContent>

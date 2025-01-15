@@ -6,7 +6,7 @@ export default function Home() {
     "@type": "SoftwareApplication",
     name: "DevPricer - Website Quotation or Proposal Generator",
     applicationCategory: "UtilityApplication",
-    url: "https://devpricer.netlify.app",
+    url: "https://devpricer.vercel.app",
     offers: {
       "@type": "Offer",
       price: "0",
@@ -32,7 +32,7 @@ export default function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-16">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-40 md:pt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Section */}
           <div className="py-20 text-center">
@@ -60,7 +60,7 @@ export default function Home() {
               </span>
             </h1>
             <p className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto">
-              Create beautiful, professional project proposals for your web
+              Create simple, professional project proposals for your software
               development clients. Free, fast, and designed specifically for
               developers and agencies.
             </p>
@@ -95,8 +95,8 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-3">Save Time</h3>
               <p className="text-gray-600 leading-relaxed">
-                Generate professional proposals in minutes, not hours.
-                Streamline your workflow and focus on what matters most.
+                Quickly generate professional proposals in minutes. No login
+                required.
               </p>
             </div>
 
@@ -119,8 +119,7 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-3">Look Professional</h3>
               <p className="text-gray-600 leading-relaxed">
-                Beautifully designed templates that win clients. Stand out from
-                the competition with polished proposals.
+                A simple design template focused on brevity and professionalism
               </p>
             </div>
 
@@ -143,8 +142,8 @@ export default function Home() {
               </div>
               <h3 className="text-xl font-semibold mb-3">Instant PDF</h3>
               <p className="text-gray-600 leading-relaxed">
-                Download your proposal immediately in PDF format. Ready to share
-                with your clients right away.
+                Download your proposal immediately in PDF format to share with
+                your clients right away.
               </p>
             </div>
           </div>
