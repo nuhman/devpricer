@@ -25,7 +25,7 @@ Live:  https://devpricer.vercel.app
    
 ## Generated Proposal PDF Sample  
    
-![proposal](https://github.com/user-attachments/assets/603c1e82-815f-46a9-bc68-1558489b06ba)
+![proposal3](https://github.com/user-attachments/assets/d12e2f46-b8ce-41d4-b327-b6a031813334)
   
 
 ## Getting Started
