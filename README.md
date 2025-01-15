@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Software Quotation/Proposal Generator
+  
+A free online for freelancers and small agencies to create professional project proposals and quotations.   
+Developers often wants to create project proposals to submit to their potential clients. While there are many proposal generators available online, most of them are paid or not developer focused. 
+
+Live:  https://devpricer.vercel.app  
+
+## Features  
+
+- **Multi-step Form**: 
+  - Company/Developer & Client Details  
+  - Project Components with Pricing  
+  
+- **Flexible Pricing Options**:
+  - Hourly rate calculation
+  - Fixed price components
+  - Multiple currency support
+  
+- **Data Management**:  
+  - Fully client-side processing; No login required
+  - Local storage persistence
+  - Data export as PDF  
+   
+## Generated Proposal PDF Sample  
+   
+![proposal](https://github.com/user-attachments/assets/603c1e82-815f-46a9-bc68-1558489b06ba)
+  
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/nuhman/devpricer.git
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. Install dependencies:
+   ```bash
+   cd devpricer
+   npm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Fill in your company/freelancer details
+2. Add client information
+3. Create project components with pricing
+4. Preview the generated proposal
+5. Download as PDF
 
-## Learn More
+## Developer Customization
 
-To learn more about Next.js, take a look at the following resources:
+- You can modify the PDF template in `app/ui/proposaltemplate.tsx`   
+- Add new form fields as needed  
+- Customize validation rules in `lib/schemas.ts`  
+- Add new currencies in `lib/data/currencies.ts`  
+  
+Contributions are welcome!  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
