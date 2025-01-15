@@ -5,6 +5,8 @@ Developers often wants to create project proposals to submit to their potential 
 
 Live:  https://devpricer.vercel.app  
 
+![og-image-new](https://github.com/user-attachments/assets/ca6027fc-513b-4003-b7a2-ca2e98d05720)
+
 ## Features  
 
 - **Multi-step Form**: 
