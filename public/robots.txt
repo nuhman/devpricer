@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://devpricer.vercel.app/sitemap.xml

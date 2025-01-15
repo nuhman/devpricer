@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   col1: { width: "25%", textAlign: "left" },
   col2: { width: "35%", textAlign: "left" },
   col3: { width: "15%", textAlign: "right" },
-  col4: { width: "10%", textAlign: "right", paddingRight: "2px" },
+  col4: { width: "10%", textAlign: "right",},
   col5: { width: "15%", textAlign: "right" },
   totalSection: {
     marginTop: 20,
@@ -210,9 +210,9 @@ const ProposalTemplate: React.FC<ProposalTemplateProps> = ({ data }) => {
           <View style={styles.tableHeader}>
             <Text style={styles.col1}>Service</Text>
             <Text style={styles.col2}>Description</Text>
-            <Text style={styles.col3}>Rate ({data.currency})</Text>
+            <Text style={styles.col3}>Rate</Text>
             <Text style={styles.col4}>Hours</Text>
-            <Text style={styles.col5}>Amount ({data.currency})</Text>
+            <Text style={styles.col5}>Amount</Text>
           </View>
 
           {data.components.map((component, index) => (
