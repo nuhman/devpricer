@@ -9,7 +9,7 @@ import {
 } from "@react-pdf/renderer";
 import { ProposalData } from "@/types/Project";
 
-// Register custom fonts - using Roboto as an example
+// Register Inter font for a more modern look
 Font.register({
   family: "Roboto",
   fonts: [
@@ -34,131 +34,159 @@ Font.register({
 
 const styles = StyleSheet.create({
   page: {
-    padding: 30,
+    padding: 40,
     fontFamily: "Roboto",
-    fontSize: 12,
-    color: "#333333",
+    fontSize: 11,
+    color: "#1a1a1a",
+    backgroundColor: "#ffffff",
   },
-  headerContainer: {
-    marginBottom: 20,
-    borderBottom: "2px solid #2563eb",
-    paddingBottom: 10,
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 40,
+    paddingBottom: 20,
+    borderBottom: "2px solid #f0f0f0",
+  },
+  headerLeft: {
+    flex: 1,
+  },
+  headerRight: {
+    textAlign: "right",
   },
   proposalTitle: {
     fontSize: 20,
     fontWeight: 700,
-    color: "#2563eb",
-    marginBottom: 10,
+    color: "#000000",
+    marginBottom: 8,
+  },
+  proposalSubtitle: {
+    fontSize: 14,
+    color: "#666666",
+    marginBottom: 4,
   },
   proposalDate: {
-    fontSize: 14,
-    color: "#64748b",
+    fontSize: 12,
+    color: "#888888",
   },
   infoSection: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
+    marginBottom: 40,
+    gap: 40,
   },
   infoBlock: {
-    width: "45%",
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#f9fafb",
+    borderRadius: 8,
   },
   infoLabel: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 500,
-    color: "#2563eb",
-    marginBottom: 8,
+    color: "#666666",
+    marginBottom: 12,
     textTransform: "uppercase",
+    letterSpacing: 0.5,
   },
   infoText: {
-    fontSize: 12,
-    marginBottom: 4,
+    fontSize: 11,
+    marginBottom: 6,
     lineHeight: 1.4,
   },
-  projectSection: {
-    marginBottom: 30,
-    backgroundColor: "#f8fafc",
-    padding: 15,
-    borderRadius: 4,
-  },
-  projectTitle: {
-    fontSize: 18,
+  infoTextBold: {
+    fontSize: 13,
     fontWeight: 500,
-    color: "#1e293b",
-    marginBottom: 10,
-    textAlign: "center",
-    textTransform: "capitalize",
+    color: "#000000",
+    marginBottom: 8,
   },
   tableContainer: {
-    marginTop: 20,
+    marginTop: 30,
   },
   tableHeader: {
     flexDirection: "row",
-    backgroundColor: "#2563eb",
-    color: "#ffffff",
-    padding: 10,
-    fontSize: 12,
+    backgroundColor: "#f9fafb",
+    borderRadius: 6,
+    padding: "12px 16px",
+    marginBottom: 8,
+  },
+  tableHeaderText: {
+    fontSize: 11,
     fontWeight: 500,
+    color: "#666666",
   },
   tableRow: {
     flexDirection: "row",
-    borderBottomColor: "#e2e8f0",
-    borderBottomWidth: 1,
-    padding: 10,
-    minHeight: 40,
+    padding: "12px 16px",
+    borderBottom: "1px solid #f0f0f0",
+    minHeight: 50,
     alignItems: "center",
   },
-  tableRowEven: {
-    backgroundColor: "#f8fafc",
+  tableRowHighlight: {
+    backgroundColor: "#fafafa",
   },
-  col1: { width: "25%", textAlign: "left" },
-  col2: { width: "35%", textAlign: "left" },
+  tableRowNonHighlight: {
+    backgroundColor: "#fff",
+  },
+  col1: { width: "25%", paddingRight: 10 },
+  col2: { width: "35%", paddingRight: 10 },
   col3: { width: "15%", textAlign: "right" },
-  col4: { width: "10%", textAlign: "right",},
+  col4: { width: "10%", textAlign: "right" },
   col5: { width: "15%", textAlign: "right" },
+  serviceName: {
+    fontSize: 12,
+    fontWeight: 500,
+    color: "#000000",
+  },
+  serviceDescription: {
+    fontSize: 11,
+    color: "#666666",
+    lineHeight: 1.4,
+  },
   totalSection: {
-    marginTop: 20,
+    marginTop: 40,
     paddingTop: 20,
-    borderTopWidth: 2,
-    borderTopColor: "#2563eb",
+    borderTop: "2px solid #f0f0f0",
   },
   totalRow: {
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
-    marginTop: 10,
+    gap: 16,
   },
   totalLabel: {
-    fontSize: 16,
-    fontWeight: 700,
-    color: "#1e293b",
-    marginRight: 20,
+    fontSize: 14,
+    fontWeight: 500,
+    color: "#666666",
   },
   totalAmount: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 700,
-    color: "#2563eb",
-    marginLeft: "4px",
+    color: "#000000",
   },
   footer: {
     position: "absolute",
-    bottom: 30,
-    left: 50,
-    right: 50,
+    bottom: 40,
+    left: 40,
+    right: 40,
     textAlign: "center",
-    color: "#64748b",
+    color: "#888888",
     fontSize: 10,
-    borderTopWidth: 1,
-    borderTopColor: "#e2e8f0",
     paddingTop: 20,
+    borderTop: "1px solid #f0f0f0",
+  },
+  badge: {
+    backgroundColor: "#e5e7eb",
+    padding: "4px 8px",
+    borderRadius: 4,
+    fontSize: 10,
+    color: "#666666",
   },
 });
 
-interface ProposalTemplateProps {
-  data: ProposalData;
-}
-
-const ProposalTemplate: React.FC<ProposalTemplateProps> = ({ data }) => {
-  const totalAmount = data.components.reduce(
+const ProposalTemplate: React.FC<{ data: Partial<ProposalData> }> = ({
+  data,
+}) => {
+  const totalAmount = data?.components?.reduce(
     (sum, component) => sum + component.subtotal,
     0
   );
@@ -166,27 +194,30 @@ const ProposalTemplate: React.FC<ProposalTemplateProps> = ({ data }) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        {/* Header Section */}
-        <View style={styles.headerContainer}>
-          <Text style={styles.proposalTitle}>
-            Proposal - {data.projectName}
-          </Text>
-          <Text style={styles.proposalDate}>
-            {new Date().toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </Text>
+        {/* Header */}
+        <View style={styles.header}>
+          <View style={styles.headerLeft}>
+            <Text style={styles.proposalTitle}>{data.projectName}</Text>
+            <Text style={styles.proposalSubtitle}>Project Proposal</Text>
+          </View>
+          <View style={styles.headerRight}>
+            <View style={styles.badge}>
+              <Text>
+                {new Date().toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </Text>
+            </View>
+          </View>
         </View>
 
-        {/* Company and Client Info Section */}
+        {/* Company and Client Info */}
         <View style={styles.infoSection}>
           <View style={styles.infoBlock}>
             <Text style={styles.infoLabel}>From</Text>
-            <Text style={[styles.infoText, { fontWeight: 500 }]}>
-              {data.companyName}
-            </Text>
+            <Text style={styles.infoTextBold}>{data.companyName}</Text>
             <Text style={styles.infoText}>{data.companyAddress}</Text>
             <Text style={styles.infoText}>{data.companyEmail}</Text>
             <Text style={styles.infoText}>{data.companyPhone}</Text>
@@ -197,49 +228,51 @@ const ProposalTemplate: React.FC<ProposalTemplateProps> = ({ data }) => {
 
           <View style={styles.infoBlock}>
             <Text style={styles.infoLabel}>To</Text>
-            <Text style={[styles.infoText, { fontWeight: 500 }]}>
-              {data.clientName}
-            </Text>
+            <Text style={styles.infoTextBold}>{data.clientName}</Text>
             <Text style={styles.infoText}>{data.clientCompany}</Text>
             <Text style={styles.infoText}>{data.clientAddress}</Text>
           </View>
         </View>
 
-        {/* Components Table */}
+        {/* Services Table */}
         <View style={styles.tableContainer}>
           <View style={styles.tableHeader}>
-            <Text style={styles.col1}>Service</Text>
-            <Text style={styles.col2}>Description</Text>
-            <Text style={styles.col3}>Rate</Text>
-            <Text style={styles.col4}>Hours</Text>
-            <Text style={styles.col5}>Amount</Text>
+            <Text style={[styles.tableHeaderText, styles.col1]}>Service</Text>
+            <Text style={[styles.tableHeaderText, styles.col2]}>
+              Description
+            </Text>
+            <Text style={[styles.tableHeaderText, styles.col3]}>Rate</Text>
+            <Text style={[styles.tableHeaderText, styles.col4]}>Hours</Text>
+            <Text style={[styles.tableHeaderText, styles.col5]}>Amount</Text>
           </View>
 
-          {data.components.map((component, index) => (
+          {data.components?.map((component, index) => (
             <View
               key={component.id}
               style={[
                 styles.tableRow,
                 index % 2 === 1
-                  ? styles.tableRowEven
-                  : {
-                      backgroundColor: "#fff",
-                    },
+                  ? styles.tableRowHighlight
+                  : styles.tableRowNonHighlight,
               ]}
             >
-              <Text style={styles.col1}>{component.serviceName}</Text>
-              <Text style={styles.col2}>{component.description}</Text>
+              <View style={styles.col1}>
+                <Text style={styles.serviceName}>{component.serviceName}</Text>
+              </View>
+              <Text style={[styles.serviceDescription, styles.col2]}>
+                {component.description}
+              </Text>
               <Text style={styles.col3}>
-                {component.isFixedPrice ? (
-                  "Fixed"
-                ) : (
-                  <Text> {component.rate?.toFixed(2)}</Text>
-                )}
+                {component.isFixedPrice
+                  ? "Fixed"
+                  : `${data.currency} ${component.rate?.toFixed(2)}`}
               </Text>
               <Text style={styles.col4}>
                 {component.isFixedPrice ? "-" : component.hours}
               </Text>
-              <Text style={styles.col5}>{component.subtotal.toFixed(2)}</Text>
+              <Text style={styles.col5}>
+                {data.currency} {component.subtotal.toFixed(2)}
+              </Text>
             </View>
           ))}
         </View>
@@ -247,15 +280,17 @@ const ProposalTemplate: React.FC<ProposalTemplateProps> = ({ data }) => {
         {/* Total Section */}
         <View style={styles.totalSection}>
           <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>Total Amount:</Text>
-            <Text style={{ fontSize: 14 }}>{data.currency}</Text>
-            <Text style={styles.totalAmount}>{totalAmount.toFixed(2)}</Text>
+            <Text style={styles.totalLabel}>Total Amount</Text>
+            <Text style={styles.totalAmount}>
+              {data.currency} {totalAmount?.toFixed(2)}
+            </Text>
           </View>
         </View>
 
         {/* Footer */}
         <Text style={styles.footer}>
-          This proposal is valid for 30 days from the date of issue.
+          This proposal is valid for 30 days from the date of issue. Terms and
+          conditions apply.
         </Text>
       </Page>
     </Document>
