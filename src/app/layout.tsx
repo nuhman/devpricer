@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   keywords:
     "website quotation generator, proposal generator, web development quotation, freelance proposal tool, software project quotation, project proposal, project quotation",
   verification: {
-    google: "4f3WD2gefV8KnJbg0UxeFdfewAGk2_FPoGh3hiJTrzE",
+    google: "kGxZUz4sXIwXVmIJiCOtDkVnCQKUMSKwkIGxvW5xD64",
   },
   icons: {
     icon: [
