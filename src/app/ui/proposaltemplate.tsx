@@ -151,12 +151,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
-    gap: 16,
+    gap: 8,
   },
   totalLabel: {
     fontSize: 14,
     fontWeight: 500,
     color: "#666666",
+  },
+  totalCurrency: {
+    fontSize: 18,
+    fontWeight: 700,
+    color: "#000000",
   },
   totalAmount: {
     fontSize: 24,
@@ -265,14 +270,12 @@ const ProposalTemplate: React.FC<{ data: Partial<ProposalData> }> = ({
               <Text style={styles.col3}>
                 {component.isFixedPrice
                   ? "Fixed"
-                  : `${data.currency} ${component.rate?.toFixed(2)}`}
+                  : `${component.rate?.toFixed(2)}`}
               </Text>
               <Text style={styles.col4}>
                 {component.isFixedPrice ? "-" : component.hours}
               </Text>
-              <Text style={styles.col5}>
-                {data.currency} {component.subtotal.toFixed(2)}
-              </Text>
+              <Text style={styles.col5}>{component.subtotal.toFixed(2)}</Text>
             </View>
           ))}
         </View>
@@ -281,8 +284,12 @@ const ProposalTemplate: React.FC<{ data: Partial<ProposalData> }> = ({
         <View style={styles.totalSection}>
           <View style={styles.totalRow}>
             <Text style={styles.totalLabel}>Total Amount</Text>
+            <Text style={styles.totalCurrency}>{data.currency}</Text>
             <Text style={styles.totalAmount}>
-              {data.currency} {totalAmount?.toFixed(2)}
+              {new Intl.NumberFormat("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              }).format(totalAmount || 0)}
             </Text>
           </View>
         </View>
