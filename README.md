@@ -1,6 +1,6 @@
 # Software Quotation/Proposal Generator
-   
-A free online for freelancers and small agencies to create professional project proposals and quotations.   
+    
+A free online tool for freelancers and small agencies to create professional project proposals and quotations.   
 Developers often wants to create project proposals to submit to their potential clients. While there are many proposal generators available online, most of them are paid or not developer focused. 
 
 Live:  https://devpricer.vercel.app  
