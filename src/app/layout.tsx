@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ProposalProvider } from "@/context/ProposalContext";
@@ -67,6 +68,7 @@ export default function RootLayout({
         <ProposalProvider>
           <Navigation />
           <main>{children}</main>
+          <Analytics />
         </ProposalProvider>
       </body>
     </html>
